@@ -44,7 +44,7 @@ if (config.server.isDevelopment) {
 // Routes
 // ============================================
 
-// Health check endpoint
+// Health check endpoint (no auth required)
 app.get('/health', (_req: Request, res: Response) => {
   res.json({
     status: 'ok',
@@ -53,10 +53,16 @@ app.get('/health', (_req: Request, res: Response) => {
   });
 });
 
+// Import middleware
+import { apiKeyAuth } from './middleware/apiAuth.middleware';
+
 // Import routes
 import timetableRoutes from './routes/timetable.routes';
 import substitutionRoutes from './routes/substitution.routes';
 import cancelledRoutes from './routes/cancelled.routes';
+
+// Apply API key authentication to all /api routes
+app.use('/api', apiKeyAuth);
 
 // API Base Route
 app.get('/api', (_req: Request, res: Response) => {

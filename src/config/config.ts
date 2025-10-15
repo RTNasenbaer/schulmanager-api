@@ -34,7 +34,7 @@ export const config = {
 
   // API Security
   api: {
-    key: process.env.API_KEY || 'your-api-key-for-alexa',
+    key: process.env.API_KEY || 'nVDlr2QzHS7qZN4sjo8mfBGpEXxvIyKP',
   },
 
   // Caching Configuration
