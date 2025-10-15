@@ -5,7 +5,7 @@ services:
     env: node
     region: frankfurt # Change to your preferred region
     plan: free # Change to starter/standard for production
-    buildCommand: yarn install --frozen-lockfile && yarn build && npx puppeteer browsers install chrome --path /opt/render/.cache/puppeteer
+    buildCommand: yarn install --frozen-lockfile && yarn build
     startCommand: yarn start
     healthCheckPath: /health
     envVars:

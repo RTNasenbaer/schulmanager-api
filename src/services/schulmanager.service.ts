@@ -5,7 +5,8 @@
  * Implementiert vollständiges Login und Scraping der Stundenpläne
  */
 
-import puppeteer, { Browser, Page } from 'puppeteer';
+import puppeteer, { Browser, Page } from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 import { LessonModel } from '../models/lesson.model';
 import { SubstitutionModel } from '../models/substitution.model';
 
@@ -39,16 +40,17 @@ export class SchulmanagerService {
    */
   async init(): Promise<void> {
     if (!this.browser) {
+      const isProduction = process.env.NODE_ENV === 'production';
+      
       this.browser = await puppeteer.launch({
-        headless: 'new',
-        args: [
+        args: isProduction ? [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox'] : [
           '--no-sandbox',
           '--disable-setuid-sandbox',
           '--disable-dev-shm-usage',
-          '--disable-gpu',
-          '--disable-software-rasterizer',
-          '--disable-extensions'
+          '--disable-gpu'
         ],
+        executablePath: isProduction ? await chromium.executablePath() : undefined,
+        headless: true,
       });
       this.page = await this.browser.newPage();
     }
@@ -99,7 +101,7 @@ export class SchulmanagerService {
       });
       
       // Wait for the page to be ready
-      await this.page.waitForTimeout(2000);
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Wait for and find the email input (try multiple selectors)
       let emailInput = await this.page.$('.login-form input[type="text"]');
@@ -139,7 +141,7 @@ export class SchulmanagerService {
       ]);
       
       // Wait for dashboard to load
-      await this.page.waitForTimeout(3000);
+      await new Promise(resolve => setTimeout(resolve, 3000));
       
       // Check if login was successful by checking URL
       const currentUrl = this.page.url();
@@ -191,7 +193,7 @@ export class SchulmanagerService {
       await this.page.goto(scheduleUrl, { waitUntil: 'domcontentloaded' });
       
       // Wait for Angular to render the schedule (SPA needs time)
-      await this.page.waitForTimeout(5000);
+      await new Promise(resolve => setTimeout(resolve, 5000));
       
       // Wait for the schedule table to load
       await this.page.waitForSelector('.calendar-table', { timeout: 10000 });
