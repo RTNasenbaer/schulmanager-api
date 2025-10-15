@@ -38,6 +38,8 @@ services:
       # Add CORS_ORIGIN based on your web dashboard URL
       # - key: CORS_ORIGIN
       #   value: https://your-web-dashboard.onrender.com
-    # Puppeteer requires special configuration on Render
-    buildPacks:
-      - chrome
+      # Puppeteer environment variables
+      - key: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
+        value: true
+      - key: PUPPETEER_EXECUTABLE_PATH
+        value: /usr/bin/chromium-browser

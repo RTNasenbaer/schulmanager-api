@@ -42,11 +42,14 @@ export class SchulmanagerService {
     if (!this.browser) {
       this.browser = await puppeteer.launch({
         headless: config.server.isProduction,
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
           '--disable-dev-shm-usage',
-          '--disable-gpu'
+          '--disable-gpu',
+          '--disable-software-rasterizer',
+          '--disable-extensions'
         ],
       });
       this.page = await this.browser.newPage();
