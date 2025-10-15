@@ -26,7 +26,8 @@ export async function getCancelledToday(
   next: NextFunction
 ): Promise<void> {
   try {
-    const today = new Date().toISOString().split('T')[0];
+    // Use Europe/Berlin timezone
+    const today = new Date().toLocaleString('en-CA', { timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit' }).split(',')[0];
     const cacheKey = `cancelled:default:${today}`;
 
     const cancelledClasses = await cacheService.getOrSet(
@@ -73,9 +74,10 @@ export async function getCancelledTomorrow(
   next: NextFunction
 ): Promise<void> {
   try {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowDate = tomorrow.toISOString().split('T')[0];
+    // Use Europe/Berlin timezone
+    const berlinDate = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Berlin' }));
+    berlinDate.setDate(berlinDate.getDate() + 1);
+    const tomorrowDate = berlinDate.toISOString().split('T')[0];
     
     const cacheKey = `cancelled:default:${tomorrowDate}`;
 
@@ -185,7 +187,8 @@ export async function getWeekCancelled(
   next: NextFunction
 ): Promise<void> {
   try {
-    const today = new Date();
+    // Use Europe/Berlin timezone
+    const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Berlin' }));
     const monday = new Date(today);
     const day = today.getDay();
     const diff = today.getDate() - day + (day === 0 ? -6 : 1);

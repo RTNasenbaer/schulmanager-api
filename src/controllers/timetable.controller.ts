@@ -26,7 +26,8 @@ export async function getTodayTimetable(
   next: NextFunction
 ): Promise<void> {
   try {
-    const today = new Date().toISOString().split('T')[0];
+    // Use Europe/Berlin timezone
+    const today = new Date().toLocaleString('en-CA', { timeZone: 'Europe/Berlin', year: 'numeric', month: '2-digit', day: '2-digit' }).split(',')[0];
     const cacheKey = cacheService.getTimetableKey('default', today);
 
     // Try to get from cache first
@@ -76,9 +77,10 @@ export async function getTomorrowTimetable(
   next: NextFunction
 ): Promise<void> {
   try {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowDate = tomorrow.toISOString().split('T')[0];
+    // Use Europe/Berlin timezone
+    const berlinDate = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Berlin' }));
+    berlinDate.setDate(berlinDate.getDate() + 1);
+    const tomorrowDate = berlinDate.toISOString().split('T')[0];
     
     const cacheKey = cacheService.getTimetableKey('default', tomorrowDate);
 
@@ -205,8 +207,8 @@ export async function getWeekTimetable(
       config.cache.ttl.timetable
     );
 
-    // Get current week number
-    const now = new Date();
+    // Get current week number in Berlin timezone
+    const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Berlin' }));
     const startOfYear = new Date(now.getFullYear(), 0, 1);
     const weekNumber = Math.ceil(
       ((now.getTime() - startOfYear.getTime()) / 86400000 + startOfYear.getDay() + 1) / 7
