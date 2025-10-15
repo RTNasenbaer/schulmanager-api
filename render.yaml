@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: schulmanager-backend-api
+    name: schulmanager-api
     runtime: node
     env: node
     region: frankfurt # Change to your preferred region
