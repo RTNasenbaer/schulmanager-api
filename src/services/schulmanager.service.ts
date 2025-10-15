@@ -6,7 +6,6 @@
  */
 
 import puppeteer, { Browser, Page } from 'puppeteer';
-import { config } from '../config/config';
 import { LessonModel } from '../models/lesson.model';
 import { SubstitutionModel } from '../models/substitution.model';
 
@@ -40,13 +39,8 @@ export class SchulmanagerService {
    */
   async init(): Promise<void> {
     if (!this.browser) {
-      // Try to find Chromium executable
-      const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || 
-                            (config.server.isProduction ? '/usr/bin/chromium' : undefined);
-      
       this.browser = await puppeteer.launch({
         headless: 'new',
-        executablePath,
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
