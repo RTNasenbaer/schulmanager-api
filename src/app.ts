@@ -97,13 +97,14 @@ app.use((req: Request, res: Response) => {
 // Global Error Handler
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error('Error:', err);
+  console.error('Stack:', err.stack);
 
   res.status(500).json({
     success: false,
     error: {
       code: 'INTERNAL_ERROR',
-      message: config.server.isDevelopment ? err.message : 'Internal server error',
-      details: config.server.isDevelopment ? err.stack : undefined,
+      message: err.message,
+      details: err.stack,
       statusCode: 500,
     },
     timestamp: new Date().toISOString(),

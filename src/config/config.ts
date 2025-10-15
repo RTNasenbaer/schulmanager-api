@@ -81,9 +81,18 @@ export function validateConfig(): void {
   const missing = required.filter(key => !process.env[key]);
 
   if (missing.length > 0 && config.server.isProduction) {
+    console.error('❌ Missing required environment variables:', missing.join(', '));
+    console.error('');
+    console.error('Please set these in Render Dashboard:');
+    console.error('   1. Go to your service → Environment');
+    console.error('   2. Add these secret variables:');
+    missing.forEach(key => {
+      console.error(`      - ${key}=your-secret-value`);
+    });
+    console.error('');
     throw new Error(
       `Missing required environment variables: ${missing.join(', ')}\n` +
-      'Please check your .env file.'
+      'Set them in Render Dashboard → Environment tab'
     );
   }
 
