@@ -1,6 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
-import { ApiResponse } from '../../../shared/types/api-response.types';
 import { schulmanagerService } from '../services/schulmanager.service';
+
+// Local type definition
+interface ApiResponse<T = any> {
+  success: boolean;
+  data?: T;
+  error?: { code: string; message: string; statusCode: number };
+  timestamp: string;
+}
 import { cacheService } from '../services/cache.service';
 import { config } from '../config/config';
 
@@ -14,7 +21,7 @@ import { config } from '../config/config';
  * Stundenplan für heute abrufen
  */
 export async function getTodayTimetable(
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
@@ -64,7 +71,7 @@ export async function getTodayTimetable(
  * Stundenplan für morgen abrufen
  */
 export async function getTomorrowTimetable(
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
@@ -174,7 +181,7 @@ export async function getTimetableByDate(
  * Stundenplan für die aktuelle Woche abrufen
  */
 export async function getWeekTimetable(
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {

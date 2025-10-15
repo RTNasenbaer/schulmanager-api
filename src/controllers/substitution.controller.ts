@@ -1,6 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
-import { ApiResponse } from '../../../shared/types/api-response.types';
 import { schulmanagerService } from '../services/schulmanager.service';
+
+// Local type definition
+interface ApiResponse<T = any> {
+  success: boolean;
+  data?: T;
+  error?: { code: string; message: string; statusCode: number };
+  timestamp: string;
+}
 import { cacheService } from '../services/cache.service';
 import { config } from '../config/config';
 
@@ -11,10 +18,10 @@ import { config } from '../config/config';
 
 /**
  * GET /api/substitutions/today
- * Vertretungsplan für heute abrufen
+ * Vertretungsstunden für heute abrufen
  */
-export async function getTodaySubstitutions(
-  req: Request,
+export async function getSubstitutionsToday(
+  _req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
@@ -61,7 +68,7 @@ export async function getTodaySubstitutions(
  * Vertretungsplan für morgen abrufen
  */
 export async function getTomorrowSubstitutions(
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {

@@ -30,11 +30,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Compression
-app.use(compression());
+app.use(compression() as any);
 
 // Request logging (Development)
 if (config.server.isDevelopment) {
-  app.use((req: Request, res: Response, next: NextFunction) => {
+  app.use((req: Request, _res: Response, next: NextFunction) => {
     console.log(`${req.method} ${req.path}`);
     next();
   });
@@ -45,7 +45,7 @@ if (config.server.isDevelopment) {
 // ============================================
 
 // Health check endpoint
-app.get('/health', (req: Request, res: Response) => {
+app.get('/health', (_req: Request, res: Response) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
@@ -59,7 +59,7 @@ import substitutionRoutes from './routes/substitution.routes';
 import cancelledRoutes from './routes/cancelled.routes';
 
 // API Base Route
-app.get('/api', (req: Request, res: Response) => {
+app.get('/api', (_req: Request, res: Response) => {
   res.json({
     message: 'Schulmanager API',
     version: '1.0.0',
@@ -95,7 +95,7 @@ app.use((req: Request, res: Response) => {
 });
 
 // Global Error Handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error('Error:', err);
 
   res.status(500).json({

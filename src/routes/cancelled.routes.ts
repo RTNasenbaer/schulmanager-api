@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import {
-  getTodayCancelled,
-  getTomorrowCancelled,
+  getCancelledToday,
+  getCancelledTomorrow,
   getCancelledByDate,
   getWeekCancelled,
 } from '../controllers/cancelled.controller';
@@ -12,13 +12,13 @@ const router = Router();
  * GET /api/cancelled/today
  * Ausgefallene Stunden für heute
  */
-router.get('/today', getTodayCancelled);
+router.get('/today', getCancelledToday);
 
 /**
  * GET /api/cancelled/tomorrow
  * Ausgefallene Stunden für morgen
  */
-router.get('/tomorrow', getTomorrowCancelled);
+router.get('/tomorrow', getCancelledTomorrow);
 
 /**
  * GET /api/cancelled/week

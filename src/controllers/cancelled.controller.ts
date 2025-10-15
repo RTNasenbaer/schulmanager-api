@@ -1,6 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
-import { ApiResponse } from '../../../shared/types/api-response.types';
 import { schulmanagerService } from '../services/schulmanager.service';
+
+// Local type definition
+interface ApiResponse<T = any> {
+  success: boolean;
+  data?: T;
+  error?: { code: string; message: string; statusCode: number };
+  timestamp: string;
+}
 import { cacheService } from '../services/cache.service';
 import { config } from '../config/config';
 
@@ -11,10 +18,10 @@ import { config } from '../config/config';
 
 /**
  * GET /api/cancelled/today
- * Ausgefallene Stunden für heute abrufen
+ * Ausfallende Stunden für heute abrufen
  */
-export async function getTodayCancelled(
-  req: Request,
+export async function getCancelledToday(
+  _req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
@@ -58,10 +65,10 @@ export async function getTodayCancelled(
 
 /**
  * GET /api/cancelled/tomorrow
- * Ausgefallene Stunden für morgen abrufen
+ * Ausfallende Stunden für morgen abrufen
  */
-export async function getTomorrowCancelled(
-  req: Request,
+export async function getCancelledTomorrow(
+  _req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
@@ -173,7 +180,7 @@ export async function getCancelledByDate(
  * Ausgefallene Stunden für die aktuelle Woche abrufen
  */
 export async function getWeekCancelled(
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {

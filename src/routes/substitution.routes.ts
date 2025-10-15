@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-  getTodaySubstitutions,
+  getSubstitutionsToday,
   getTomorrowSubstitutions,
   getSubstitutionsByDate,
 } from '../controllers/substitution.controller';
@@ -12,7 +12,7 @@ const router = Router();
  * @desc    Get today's substitutions
  * @access  Public (should be protected with API key in production)
  */
-router.get('/today', getTodaySubstitutions);
+router.get('/today', getSubstitutionsToday);
 
 /**
  * @route   GET /api/substitutions/tomorrow

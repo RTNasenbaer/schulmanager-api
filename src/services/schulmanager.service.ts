@@ -26,7 +26,6 @@ export class SchulmanagerService {
   private browser: Browser | null = null;
   private page: Page | null = null;
   private isLoggedIn: boolean = false;
-  private sessionEmail: string = '';
   private loginPromise: Promise<boolean> | null = null;
 
   /**
@@ -146,7 +145,6 @@ export class SchulmanagerService {
       this.isLoggedIn = currentUrl.includes('schulmanager-online.de/#/');
       
       if (this.isLoggedIn) {
-        this.sessionEmail = username;
         console.log('✅ Login successful');
       } else {
         console.log('❌ Login failed - not redirected to dashboard');
@@ -198,6 +196,7 @@ export class SchulmanagerService {
       await this.page.waitForSelector('.calendar-table', { timeout: 10000 });
       
       // Extract the schedule data
+      // @ts-ignore - document is available in browser context
       const scheduleData = await this.page.evaluate(() => {
         const table = document.querySelector('.calendar-table');
         const rows = table?.querySelectorAll('tbody tr');
@@ -228,11 +227,11 @@ export class SchulmanagerService {
         });
         
         // Process each row (hour)
-        rows.forEach((row, hourIndex) => {
+        rows.forEach((row: any, hourIndex: number) => {
           const cells = row.querySelectorAll('td');
           const hourNumber = hourIndex + 1;
           
-          cells.forEach((cell, dayIndex) => {
+          cells.forEach((cell: any, dayIndex: number) => {
             const lessonCell = cell.querySelector('.lesson-cell');
             
             if (lessonCell) {

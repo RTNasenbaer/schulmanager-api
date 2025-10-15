@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: schulmanager-backend-api
+    runtime: node
+    env: node
+    region: frankfurt # Change to your preferred region
+    plan: free # Change to starter/standard for production
+    buildCommand: yarn install && yarn build
+    startCommand: yarn start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: SCHULMANAGER_BASE_URL
+        value: https://www.schulmanager-online.de
+      - key: SCHULMANAGER_LOGIN_URL
+        value: https://login.schulmanager-online.de/
+      # The following should be set as secret environment variables in Render dashboard:
+      # - SCHULMANAGER_EMAIL
+      # - SCHULMANAGER_PASSWORD
+      # - JWT_SECRET
+      # - API_KEY
+      # - ENCRYPTION_KEY
+      - key: CACHE_TTL_TIMETABLE
+        value: 21600
+      - key: CACHE_TTL_SUBSTITUTIONS
+        value: 1800
+      - key: CACHE_TTL_USER_DATA
+        value: 3600
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX_REQUESTS
+        value: 100
+      - key: LOG_LEVEL
+        value: info
+      # Add CORS_ORIGIN based on your web dashboard URL
+      # - key: CORS_ORIGIN
+      #   value: https://your-web-dashboard.onrender.com
+    # Puppeteer requires special configuration on Render
+    buildPacks:
+      - chrome
